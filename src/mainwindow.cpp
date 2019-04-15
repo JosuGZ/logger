@@ -14,59 +14,60 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    QTextDocument *log = new QTextDocument("log");
-    ui->logViewer->setDocument(log);
+  QTextDocument *log = new QTextDocument("log");
+  ui->logViewer->setDocument(log);
 #ifdef __linux__
-    ui->actionToggleOnTop->setVisible(false);
+  ui->actionToggleOnTop->setVisible(false);
 #endif
-    connect(ui->Enter,SIGNAL(clicked()),this,SLOT(paste()));
-    connect(ui->actionToggleOnTop,SIGNAL(triggered()),this,SLOT(toggleOnTop()));
-    connect(ui->actionUndo,SIGNAL(triggered()),this,SLOT(undo()));
-    connect(ui->enterButton,SIGNAL(clicked()),this,SLOT(enter()));
-    connect(ui->lineEdit,SIGNAL(returnPressed()),this,SLOT(enter()));
+  connect(ui->Enter,SIGNAL(clicked()),this,SLOT(paste()));
+  connect(ui->actionToggleOnTop,SIGNAL(triggered()),this,SLOT(toggleOnTop()));
+  connect(ui->actionUndo,SIGNAL(triggered()),this,SLOT(undo()));
+  connect(ui->enterButton,SIGNAL(clicked()),this,SLOT(enter()));
+  connect(ui->lineEdit,SIGNAL(returnPressed()),this,SLOT(enter()));
 }
 
 void MainWindow::toggleOnTop() {
-    if( this->windowFlags() & Qt::WindowStaysOnTopHint ) {
+  if( this->windowFlags() & Qt::WindowStaysOnTopHint ) {
 #ifdef __linux__
-        this->setWindowFlags(this->windowFlags() & ~( Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ) );
+    this->setWindowFlags(this->windowFlags() & ~( Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ) );
 #elif
-        this->setWindowFlags(this->windowFlags() & ~Qt::WindowStaysOnTopHint);
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowStaysOnTopHint);
 #endif
-    } else {
+  } else {
 #ifdef __linux__
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 #elif
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
 #endif
-    }
-    this->show();
+  }
+  this->show();
 }
 
 void MainWindow::paste() {
-    //QDate now = QDate::currentDate();
-    const QClipboard *clipboard = QApplication::clipboard();
-    ui->logViewer->appendPlainText(
-                QDateTime::currentDateTime().toString("hh:mm:ss") +
-                " -> " +
-                clipboard->text());
+  //QDate now = QDate::currentDate();
+  const QClipboard *clipboard = QApplication::clipboard();
+  ui->logViewer->appendPlainText(
+    QDateTime::currentDateTime().toString("hh:mm:ss") +
+    " -> " +
+    clipboard->text()
+  );
 }
 
 void MainWindow::enter() {
-    ui->logViewer->appendPlainText(
-                QDateTime::currentDateTime().toString("hh:mm:ss") +
-                " -> " +
-                ui->lineEdit->text());
-    ui->lineEdit->clear();
+  ui->logViewer->appendPlainText(
+    QDateTime::currentDateTime().toString("hh:mm:ss") +
+    " -> " +
+    ui->lineEdit->text()
+  );
+  ui->lineEdit->clear();
 }
 
 void MainWindow::undo() {
-    ui->logViewer->document()->undo();
+  ui->logViewer->document()->undo();
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+MainWindow::~MainWindow() {
+  delete ui;
 }
