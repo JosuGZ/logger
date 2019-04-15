@@ -26,6 +26,15 @@ QFile *FileManager::currentFile() {
   return file;
 }
 
+QString FileManager::readFile() {
+  QFile *file = currentFile();
+  file->open(QIODevice::ReadOnly | QIODevice::Text);
+  QString text = QString::fromStdString(file->readAll().toStdString());
+  file->close();
+  delete file;
+  return text;
+}
+
 void FileManager::saveFile(QString text) {
   QFile *file = currentFile();
   file->open(QIODevice::WriteOnly | QIODevice::Text);

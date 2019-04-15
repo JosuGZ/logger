@@ -13,7 +13,8 @@ public:
   explicit FileManager(QObject *parent = nullptr);
   QDir fileDir();
   QFile *currentFile(); // TODO: Watch for changes, check for write access,
-                       //       update as days pass, check for errors...
+                        //       update as days pass, check for errors...
+  QString readFile();
 
 signals:
 

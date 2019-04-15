@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   QTextDocument *log = new QTextDocument("log");
   ui->logViewer->setDocument(log);
+  ui->logViewer->setPlainText(mFileManager.readFile());
 #ifdef __linux__
   ui->actionToggleOnTop->setVisible(false);
 #endif
