@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QTextDocument *log = new QTextDocument("log");
     ui->logViewer->setDocument(log);
+#ifdef __linux__
+    ui->actionToggleOnTop->setVisible(false);
+#endif
     connect(ui->Enter,SIGNAL(clicked()),this,SLOT(paste()));
     connect(ui->actionToggleOnTop,SIGNAL(triggered()),this,SLOT(toggleOnTop()));
     connect(ui->actionUndo,SIGNAL(triggered()),this,SLOT(undo()));
@@ -27,9 +30,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::toggleOnTop() {
     if( this->windowFlags() & Qt::WindowStaysOnTopHint ) {
+#ifdef __linux__
+        this->setWindowFlags(this->windowFlags() & ~( Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ) );
+#elif
         this->setWindowFlags(this->windowFlags() & ~Qt::WindowStaysOnTopHint);
+#endif
     } else {
-        this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
+#ifdef __linux__
+    this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
+#elif
+    this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
+#endif
     }
     this->show();
 }
