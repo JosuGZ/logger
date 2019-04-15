@@ -12,11 +12,13 @@ TARGET = Logger
 TEMPLATE = app
 
 SOURCES += \
-  src/main.cpp \
-  src/mainwindow.cpp
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/filemanager.cpp
 
 HEADERS += \
-  src/mainwindow.h
+    src/mainwindow.h \
+    src/filemanager.h
 
 FORMS += \
-  src/mainwindow.ui
+    src/mainwindow.ui

@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->actionUndo,SIGNAL(triggered()),this,SLOT(undo()));
   connect(ui->enterButton,SIGNAL(clicked()),this,SLOT(enter()));
   connect(ui->lineEdit,SIGNAL(returnPressed()),this,SLOT(enter()));
+  connect(ui->logViewer, &QPlainTextEdit::textChanged, this, [=] {
+    mFileManager.saveFile(ui->logViewer->toPlainText());
+  });
 }
 
 void MainWindow::toggleOnTop() {
