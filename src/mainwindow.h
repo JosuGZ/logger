@@ -16,6 +16,7 @@ public:
   ~MainWindow();
 
 public slots:
+  void onFileChanged(const QString &text);
   void log(const QString &text);
   void paste();
   void toggleOnTop();

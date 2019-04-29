@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   QTextDocument *log = new QTextDocument("log");
   ui->logViewer->setDocument(log);
-  ui->logViewer->setPlainText(mFileManager.readFile());
+  onFileChanged(mFileManager.readFile());
 #ifdef __linux__
   ui->actionToggleOnTop->setVisible(false);
 #endif
@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->logViewer, &QPlainTextEdit::textChanged, this, [=] {
     mFileManager.saveFile(ui->logViewer->toPlainText());
   });
+  connect(&mFileManager, &FileManager::onFileChanged, this, &MainWindow::onFileChanged);
   this->log("App starting...");
   ui->lineEdit->setFocus();
 }
@@ -75,4 +76,8 @@ void MainWindow::undo() {
 
 MainWindow::~MainWindow() {
   delete ui;
+}
+
+void MainWindow::onFileChanged(const QString &text) {
+  ui->logViewer->setPlainText(text);
 }
