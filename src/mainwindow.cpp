@@ -51,6 +51,13 @@ void MainWindow::toggleOnTop() {
   this->show();
 }
 
+void MainWindow::log(const QString &text) {
+  ui->logViewer->appendPlainText(
+    QDateTime::currentDateTime().toString("hh:mm:ss") +
+    " -> " + text
+  );
+}
+
 void MainWindow::paste() {
   //QDate now = QDate::currentDate();
   const QClipboard *clipboard = QApplication::clipboard();

@@ -16,6 +16,7 @@ public:
   ~MainWindow();
 
 public slots:
+  void log(const QString &text);
   void paste();
   void toggleOnTop();
   void enter();
