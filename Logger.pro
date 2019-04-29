@@ -14,11 +14,15 @@ TEMPLATE = app
 SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
-    src/filemanager.cpp
+    src/filemanager.cpp \
+    src/eventfilter.cpp
 
 HEADERS += \
     src/mainwindow.h \
-    src/filemanager.h
+    src/filemanager.h \
+    src/eventfilter.h
 
 FORMS += \
     src/mainwindow.ui
+
+LIBS += -lWtsapi32
