@@ -56,6 +56,7 @@ void MainWindow::log(const QString &text) {
     QDateTime::currentDateTime().toString("hh:mm:ss") +
     " -> " + text
   );
+  ui->logViewer->moveCursor(QTextCursor::MoveOperation::End);
 }
 
 void MainWindow::paste() {
