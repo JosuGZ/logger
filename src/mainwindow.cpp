@@ -59,21 +59,12 @@ void MainWindow::log(const QString &text) {
 }
 
 void MainWindow::paste() {
-  //QDate now = QDate::currentDate();
   const QClipboard *clipboard = QApplication::clipboard();
-  ui->logViewer->appendPlainText(
-    QDateTime::currentDateTime().toString("hh:mm:ss") +
-    " -> " +
-    clipboard->text()
-  );
+  log(clipboard->text());
 }
 
 void MainWindow::enter() {
-  ui->logViewer->appendPlainText(
-    QDateTime::currentDateTime().toString("hh:mm:ss") +
-    " -> " +
-    ui->lineEdit->text()
-  );
+  log(ui->lineEdit->text());
   ui->lineEdit->clear();
 }
 
