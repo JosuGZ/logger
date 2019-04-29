@@ -36,13 +36,13 @@ void MainWindow::toggleOnTop() {
   if( this->windowFlags() & Qt::WindowStaysOnTopHint ) {
 #ifdef __linux__
     this->setWindowFlags(this->windowFlags() & ~( Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ) );
-#elif
+#else
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowStaysOnTopHint);
 #endif
   } else {
 #ifdef __linux__
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
-#elif
+#else
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
 #endif
   }
