@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->logViewer, &QPlainTextEdit::textChanged, this, [=] {
     mFileManager.saveFile(ui->logViewer->toPlainText());
   });
+  this->log("App starting...");
+  ui->lineEdit->setFocus();
 }
 
 void MainWindow::toggleOnTop() {
