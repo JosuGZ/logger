@@ -5,8 +5,9 @@
 #include <QDebug>
 
 FileManager::FileManager(QObject *parent) : QObject(parent) {
-  // TODO: What happens after resuming computer?
+  // TODO: What happens after resuming the computer?
   mFileWatcher = new QFileSystemWatcher();
+  mIgnoreLastChange = false;
   mFileWatcher->addPath(fileDirPath());
   QStringList files = fileDir().entryList(QStringList() << "*.txt", QDir::Files);
   foreach(QString filename, files) {
@@ -59,19 +60,25 @@ QString FileManager::readFile() {
 void FileManager::saveFile(QString text) {
   qDebug() << "Saving file...";
   if (text != readFile()) { // TODO:
+    mIgnoreLastChange = true;
     QFile *file = currentFile();
     file->open(QIODevice::WriteOnly | QIODevice::Text);
     file->write(text.toStdString().c_str());
     file->close();
     delete file;
   } else {
-    qDebug() << "File not changed...";
+    qDebug() << "Same content...";
   }
 }
 
 void FileManager::fileChanged(QString path) {
   qDebug() << "fileChanged" << path;
   if (path == this->currentFile()->fileName()) {
-    emit onFileChanged(this->readFile());
+    if (mIgnoreLastChange) {
+      qDebug() << "Ignoring..." << path;
+      mIgnoreLastChange = false;
+    } else {
+      emit onFileChanged(this->readFile());
+    }
   }
 }

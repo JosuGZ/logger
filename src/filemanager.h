@@ -27,6 +27,7 @@ public slots:
 
 private:
   QFileSystemWatcher *mFileWatcher;
+  bool mIgnoreLastChange;
 
 private slots:
   void fileChanged(QString path);
