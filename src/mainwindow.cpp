@@ -7,18 +7,22 @@
 #include "QDateTime"
 #include <QClipboard>
 #include <QClipboard>
+#include <QDebug>
 
 #include <string>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    mSideBarModel(new SideBarModel()),
+    mFileManager(new FileManager(mSideBarModel))
 {
   ui->setupUi(this);
 
   QTextDocument *log = new QTextDocument("log");
   ui->logViewer->setDocument(log);
-  onFileChanged(mFileManager.readFile());
+  onFileChanged(mFileManager->readFile());
+  ui->fileList->setModel(mSideBarModel);
 #ifdef __linux__
   ui->actionToggleOnTop->setVisible(false);
 #endif
@@ -28,9 +32,9 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->enterButton,SIGNAL(clicked()),this,SLOT(enter()));
   connect(ui->lineEdit,SIGNAL(returnPressed()),this,SLOT(enter()));
   connect(ui->logViewer, &QPlainTextEdit::textChanged, this, [=] {
-    mFileManager.saveFile(ui->logViewer->toPlainText());
+    mFileManager->saveFile(ui->logViewer->toPlainText());
   });
-  connect(&mFileManager, &FileManager::onFileChanged, this, &MainWindow::onFileChanged);
+  connect(mFileManager, &FileManager::onFileChanged, this, &MainWindow::onFileChanged);
   this->log("App starting...");
   ui->lineEdit->setFocus();
 }
@@ -75,6 +79,8 @@ void MainWindow::undo() {
 }
 
 MainWindow::~MainWindow() {
+  delete mFileManager;
+  delete mSideBarModel;
   delete ui;
 }
 

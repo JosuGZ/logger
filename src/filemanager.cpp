@@ -4,13 +4,17 @@
 #include <QStandardPaths>
 #include <QDebug>
 
-FileManager::FileManager(QObject *parent) : QObject(parent) {
+FileManager::FileManager(SideBarModel *sideBarModel, QObject *parent):
+  QObject(parent),
+  mSidebarModel(sideBarModel)
+{
   // TODO: What happens after resuming the computer?
   mFileWatcher = new QFileSystemWatcher();
   mIgnoreLastChange = false;
   mFileWatcher->addPath(fileDirPath());
   QStringList files = fileDir().entryList(QStringList() << "*.txt", QDir::Files);
   foreach(QString filename, files) {
+    sideBarModel->addFile(QFile(fileDirPath() + "/" + filename));
     mFileWatcher->addPath(fileDirPath() + "/" + filename);
     qDebug() << "filename" << filename;
   }

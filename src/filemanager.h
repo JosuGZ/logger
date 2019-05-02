@@ -1,6 +1,8 @@
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
 
+#include "models/sidebarmodel.h"
+
 #include <QFile>
 #include <QDir>
 #include <QObject>
@@ -11,7 +13,7 @@
 class FileManager : public QObject {
   Q_OBJECT
 public:
-  explicit FileManager(QObject *parent = nullptr);
+  explicit FileManager(SideBarModel *sideBarModel, QObject *parent = nullptr);
   ~FileManager();
   QString fileDirPath();
   QDir fileDir();
@@ -26,6 +28,7 @@ public slots:
   void saveFile(QString);
 
 private:
+  SideBarModel *mSidebarModel;
   QFileSystemWatcher *mFileWatcher;
   bool mIgnoreLastChange;
 

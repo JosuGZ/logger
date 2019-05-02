@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "models/sidebarmodel.h"
 #include "filemanager.h"
 #include <QMainWindow>
 
@@ -25,7 +26,8 @@ public slots:
 
 private:
   Ui::MainWindow *ui;
-  FileManager mFileManager;
+  SideBarModel *mSideBarModel;
+  FileManager *mFileManager;
 };
 
 #endif // MAINWINDOW_H
