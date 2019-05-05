@@ -18,10 +18,20 @@ QModelIndex SideBarModel::addFile(const QFile &file) {
   return index(rowIndex, 0);
 }
 
+void SideBarModel::removeFile(const QFile &file) {
+  qDebug() << "Deleting" << file.fileName();
+  for (int i=0; i<rowCount(); ++i) {
+    const QFile &currentFile = *mFiles->at(static_cast<uint>(i));
+    if (currentFile.fileName() == file.fileName()) {
+      removeRows(i, 1);
+      break;
+    }
+  }
+}
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 int SideBarModel::rowCount(const QModelIndex &parent) const {
-  qDebug() << int(this->mFiles->size());
   return int(this->mFiles->size());
 }
 #pragma GCC diagnostic pop
@@ -40,7 +50,6 @@ QVariant SideBarModel::data(int index, int role) const {
     case Qt::DisplayRole:
       return file.fileName();
     default:
-      //return file.fileName();
       return QVariant();
   }
 }
@@ -53,13 +62,11 @@ bool SideBarModel::setData(const QModelIndex &index, const QVariant &value, int 
 }
 #pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wreturn-type"
 bool SideBarModel::removeRows(int row, int count, const QModelIndex &parent) {
-  assert(false); // Not implemented
+  beginRemoveRows(parent, row, row + count - 1);
+  mFiles->erase(mFiles->begin() + row, mFiles->begin() + row + count);
+  return true;
 }
-#pragma GCC diagnostic pop
 
 QHash<int, QByteArray> SideBarModel::roleNames() const {
   QHash<int, QByteArray> roles;

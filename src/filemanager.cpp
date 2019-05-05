@@ -20,6 +20,27 @@ FileManager::FileManager(SideBarModel *sideBarModel, QObject *parent):
   }
   connect(mFileWatcher, &QFileSystemWatcher::directoryChanged, this, [=] (QString path) {
     qDebug() << "directoryChanged" << path;
+    QDir dir(path);
+    QStringList files = dir.entryList(QStringList() << "*.txt", QDir::Files);
+    // Add new files
+    foreach(QString filename, files) {
+      QString fullPath = fileDirPath() + "/" + filename;
+      if (!mFileWatcher->files().contains(fullPath)) {
+        qDebug() << "New file:" << fullPath;
+        sideBarModel->addFile(QFile(fullPath));
+        mFileWatcher->addPath(fullPath);
+      }
+    }
+    // Remove deleted files
+    foreach(QString fullPath, mFileWatcher->files()) {
+      auto chunks = fullPath.split("/");
+      QString fileName = chunks[chunks.length() - 1];
+      if (!files.contains(fileName)) {
+        qDebug() << "Deleted file:" << fullPath;
+        sideBarModel->removeFile(QFile(fullPath));
+        mFileWatcher->removePath(fullPath); // TODO: It triggers as changed, what to do?
+      }
+    }
   });
   connect(mFileWatcher, &QFileSystemWatcher::fileChanged, this, &FileManager::fileChanged);
 }

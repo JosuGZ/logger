@@ -17,11 +17,12 @@ public:
   };
   SideBarModel(QObject *parent = nullptr);
   QModelIndex addFile(const QFile &file);
+  void removeFile(const QFile &file);
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
   QVariant data(int index, int role = Qt::DisplayRole) const;
   bool setData(const QModelIndex &index, const QVariant &value, int role) override;
-  bool removeRows(int row, int count, const QModelIndex &parent) override;
+  bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
   QHash<int, QByteArray> roleNames() const override;
 
 private:
