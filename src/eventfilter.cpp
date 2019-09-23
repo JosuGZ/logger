@@ -1,5 +1,7 @@
 #include "eventfilter.h"
 
+#ifdef __windows__
+
 EventFilter::EventFilter(MainWindow &mainWindow): mMainWindow(mainWindow) {};
 
 // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagmsg
@@ -100,3 +102,5 @@ bool EventFilter::nativeEventFilter(const QByteArray &eventType, void *message, 
     }
     return false;
 }
+
+#endif // __windows__

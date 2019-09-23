@@ -27,4 +27,4 @@ HEADERS += \
 FORMS += \
     src/mainwindow.ui
 
-LIBS += -lWtsapi32
+win32: LIBS += -lWtsapi32
