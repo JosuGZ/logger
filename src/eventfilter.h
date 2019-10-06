@@ -1,6 +1,5 @@
 #ifndef EVENTFILTER_H
 #define EVENTFILTER_H
-#ifdef __windows__
 
 #include "mainwindow.h"
 
@@ -22,5 +21,4 @@ private:
 
 // Native event: https://stackoverflow.com/questions/14048565/get-hwnd-on-windows-with-qt5-from-wid
 
-#endif // __windows__
 #endif // EVENTFILTER_H

@@ -15,14 +15,16 @@ SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
     src/filemanager.cpp \
-    src/eventfilter.cpp \
     src/models/sidebarmodel.cpp
+win32: SOURCES += \
+    src/eventfilter.cpp
 
 HEADERS += \
     src/mainwindow.h \
     src/filemanager.h \
-    src/eventfilter.h \
     src/models/sidebarmodel.h
+win32: HEADERS += \
+    src/eventfilter.h
 
 FORMS += \
     src/mainwindow.ui
