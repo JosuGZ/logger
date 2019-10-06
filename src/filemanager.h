@@ -34,6 +34,7 @@ private:
 
 private slots:
   void fileChanged(QString path);
+  void fileRemoved(QString path);
 };
 
 #endif // FILEMANAGER_H

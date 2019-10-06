@@ -22,6 +22,7 @@ FileManager::FileManager(SideBarModel *sideBarModel, QObject *parent):
     qDebug() << "directoryChanged" << path;
     QDir dir(path);
     QStringList files = dir.entryList(QStringList() << "*.txt", QDir::Files);
+    qDebug() << files;
     // Add new files
     foreach(QString filename, files) {
       QString fullPath = fileDirPath() + "/" + filename;
@@ -34,11 +35,11 @@ FileManager::FileManager(SideBarModel *sideBarModel, QObject *parent):
     // Remove deleted files
     foreach(QString fullPath, mFileWatcher->files()) {
       auto chunks = fullPath.split("/");
+      qDebug() << "chunks:" << chunks;
       QString fileName = chunks[chunks.length() - 1];
+      qDebug() << "fileName:" << fileName;
       if (!files.contains(fileName)) {
-        qDebug() << "Deleted file:" << fullPath;
-        sideBarModel->removeFile(QFile(fullPath));
-        mFileWatcher->removePath(fullPath); // TODO: It triggers as changed, what to do?
+        fileRemoved(fullPath);
       }
     }
   });
@@ -98,12 +99,22 @@ void FileManager::saveFile(QString text) {
 
 void FileManager::fileChanged(QString path) {
   qDebug() << "fileChanged" << path;
-  if (path == this->currentFile()->fileName()) {
-    if (mIgnoreLastChange) {
-      qDebug() << "Ignoring..." << path;
-      mIgnoreLastChange = false;
-    } else {
-      emit onFileChanged(this->readFile());
+  if (QFile(path).exists()){
+    if (path == this->currentFile()->fileName()) {
+      if (mIgnoreLastChange) {
+        qDebug() << "Ignoring..." << path;
+        mIgnoreLastChange = false;
+      } else {
+        emit onFileChanged(this->readFile());
+      }
     }
+  } else {
+    fileRemoved(path);
   }
+}
+
+void FileManager::fileRemoved(QString path) {
+  qDebug() << "Deleted file:" << path;
+  mSidebarModel->removeFile(QFile(path));
+  mFileWatcher->removePath(path); // TODO: It triggers as changed, what to do?
 }
