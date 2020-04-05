@@ -106,6 +106,8 @@
    </attribute>
    <addaction name="actionToggleOnTop"/>
    <addaction name="actionUndo"/>
+   <addaction name="actionAdd_date"/>
+   <addaction name="actionAdd_separator"/>
   </widget>
   <action name="actionToggleOnTop">
    <property name="text">
@@ -115,6 +117,16 @@
   <action name="actionUndo">
    <property name="text">
     <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionAdd_date">
+   <property name="text">
+    <string>Add date</string>
+   </property>
+  </action>
+  <action name="actionAdd_separator">
+   <property name="text">
+    <string>Add separator</string>
    </property>
   </action>
  </widget>

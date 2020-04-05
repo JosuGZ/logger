@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->Enter,SIGNAL(clicked()),this,SLOT(paste()));
   connect(ui->actionToggleOnTop,SIGNAL(triggered()),this,SLOT(toggleOnTop()));
   connect(ui->actionUndo,SIGNAL(triggered()),this,SLOT(undo()));
+  connect(ui->actionAdd_date,SIGNAL(triggered()),this,SLOT(addDate()));
+  connect(ui->actionAdd_separator,SIGNAL(triggered()),this,SLOT(addSeparator()));
   connect(ui->enterButton,SIGNAL(clicked()),this,SLOT(enter()));
   connect(ui->lineEdit,SIGNAL(returnPressed()),this,SLOT(enter()));
   connect(ui->logViewer, &QPlainTextEdit::textChanged, this, [=] {
@@ -76,6 +78,19 @@ void MainWindow::enter() {
 
 void MainWindow::undo() {
   ui->logViewer->document()->undo();
+}
+
+void MainWindow::addDate() {
+  ui->logViewer->insertPlainText(
+    "\n\n" + QDateTime::currentDateTime().toString("yyyy-MM-dd") +
+    "\n--------------------------------------------------------------------------------\n"
+  );
+}
+
+void MainWindow::addSeparator() {
+  ui->logViewer->insertPlainText(
+    "\n\n--------------------------------------------------------------------------------\n"
+  );
 }
 
 MainWindow::~MainWindow() {

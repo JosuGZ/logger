@@ -23,6 +23,8 @@ public slots:
   void toggleOnTop();
   void enter();
   void undo();
+  void addDate();
+  void addSeparator();
 
 private:
   Ui::MainWindow *ui;
